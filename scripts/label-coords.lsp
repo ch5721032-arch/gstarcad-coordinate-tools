@@ -1,0 +1,15 @@
+;; label-coords.lsp - Insert coordinate labels under picked points
+;; Command: COORDLABEL
+(defun c:COORDLABEL ( / pre acc h pt txt )
+  (setq pre (getstring T "\nLabel prefix <XY>: "))
+  (if (= pre "") (setq pre "XY"))
+  (setq acc (getint "\nDecimal places <2>: "))
+  (if (null acc) (setq acc 2))
+  (setq h (getdist "\nText height <2.5>: "))
+  (if (null h) (setq h 2.5))
+  (while (setq pt (getpoint "\nPick point (Enter to finish): "))
+    (setq txt (strcat pre ": " (rtos (car pt) 2 acc) ", " (rtos (cadr pt) 2 acc)))
+    (command "_.TEXT" "_J" "_BL" pt h 0 txt)
+  )
+  (princ)
+)
